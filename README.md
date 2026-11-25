@@ -1,2 +1,3 @@
-# a-oracao-perdida
-Página A Oração Perdida sem VSL
+# A Oração Perdida
+
+Página sem VSL, deploy no Cloudflare Pages.
