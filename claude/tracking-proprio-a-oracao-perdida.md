@@ -9,11 +9,12 @@ site (`functions/claude/[[path]].js` devolve 404).
 
 ## Estado
 
-- **Modo: sombra** desde 26/11/2026 (`TRACK_MODE=sombra` e `MODO = 'sombra'` no `mvt.js`). Nada vai para o Meta,
-  a não ser eventos marcados como teste (`?mvteste=1`) com a aba Eventos de teste aberta.
+- **Modo: live** desde 26/11/2026 ~19h20 (`TRACK_MODE=live` no Cloudflare e `MODO = 'live'` no `mvt.js`), com ok do usuário.
+  Antes disso ficou em sombra (só eventos de teste). Primeiro PageView live: `200 {"events_received":1}`.
 - Pixel **Pixel religião** `1048248480917006` (proprietário BM MA, compartilhado com a Conta MA04).
   Era novo e nunca tinha recebido evento. Não tem lista de permissão nem de bloqueio de domínios.
-- Ninguém mais manda eventos para esse pixel: nenhum pixel da Utmify aponta para ele e a página não tinha script de pixel.
+- Ninguém mais manda eventos para esse pixel: nenhum pixel da Utmify aponta para ele, a página não tinha script de
+  pixel e o produto da Cakto não tem pixel. Por isso a virada não precisou desligar nada.
 
 ## Onde está cada coisa
 
@@ -49,13 +50,17 @@ Variável nova só vale depois de um novo deploy.
 
 ## Pendências
 
-1. **Cakto**: produto criado em 26/11 (ver seção Cakto abaixo). Falta o webhook do tracking (`/api/compra`) com o
-   segredo `CAKTO_CHAVE` colado pelo usuário, e a ligação com a Utmify.
-2. **Virada para live** (só com ok do usuário): `TRACK_MODE=live` no Cloudflare + `MODO = 'live'` no `mvt.js`
-   (o commit publica). Não há nada para desligar antes (nem Utmify nem checkout mandam para esse pixel).
-   Opcional: lista de permissão do pixel com `a-oracao-perdida.pages.dev` e `pay.cakto.com.br`.
-3. Primeira venda: conferir log `origem='compra'` com `vid:sim visitante:sim`, linha em `compras` com
-   `achou_visitante = 1`, Purchase no Gerenciador de Eventos e venda atribuída na Utmify.
+1. **Utmify ← Cakto**: as vendas ainda não chegam no dashboard 🧑🏻‍💻🌐. Esse dashboard não tem credencial de API
+   (as integrações antigas da Cakto para o Grimório e o +80 Páginas apontam para uma credencial que não existe mais)
+   e a conta da Utmify está no limite de credenciais (`API_CREDENTIALS_QUOTA_EXCEEDED` ao tentar criar
+   "Cakto - A Oração Perdida" em 26/11). Para ligar: liberar uma credencial (o usuário decide qual apagar) ou subir o
+   plano, criar a credencial no 🧑🏻‍💻🌐 e, na Cakto (Integrações → Apps → UTMify), criar um app com o token dela
+   (o usuário cola) e o produto A Oração Perdida.
+2. Opcional: webhook da Cakto para o player (`/conv?key=...` da aba *Instalar na página*) para ver as vendas no painel
+   do GG's turb (o player já usa o `sck` como ID do visitante). A chave vai na URL: quem cola é o usuário.
+3. Opcional: lista de permissão do pixel com `a-oracao-perdida.pages.dev` e `pay.cakto.com.br`.
+4. Primeira venda: conferir log `origem='compra'` com `live ... 200`, `vid:sim visitante:sim`, linha em `compras` com
+   `achou_visitante = 1` e `enviado = 1`, e o Purchase no Gerenciador de Eventos.
 
 ## Cakto
 
@@ -66,11 +71,14 @@ Variável nova só vale depois de um novo deploy.
   a declaração da Cakto de que a entrega ao comprador é responsabilidade dele.
 - Suporte: gustavoggf12@gmail.com (o e-mail verificado que veio preenchido); produtor exibido: Meu Milagre.
 - **Nenhum pixel na Cakto** (de propósito: IC sai da página, Purchase sai do `/api/compra`).
+- Webhook **Tracking A Oração Perdida** (id 88460): `https://a-oracao-perdida.pages.dev/api/compra`, evento Compra
+  aprovada, só este produto, disparo individual. O *secret* dele está no Cloudflare como `CAKTO_CHAVE` (colado pelo
+  usuário). Dois testes pelo botão "Testar" (26/11): reconhecidos como teste, com a chave válida no segundo; nada foi ao Meta.
 - A Cakto cobra do comprador uma "Taxa de serviço" de R$ 0,99 no checkout.
 
 ## Como voltar atrás
 
-`TRACK_MODE=sombra` no Cloudflare e `MODO = 'sombra'` no `mvt.js` param os envios. Para tirar tudo, remover a linha
+`TRACK_MODE=sombra` no Cloudflare e `MODO = 'sombra'` no `mvt.js` (commit) param os envios ao Meta. Para tirar tudo, remover a linha
 `<script src="/mvt.js"></script>` do `index.html` (o script de UTMs da Utmify pode ficar).
 
 ## Consultas úteis (Console do D1)
