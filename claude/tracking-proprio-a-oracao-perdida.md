@@ -50,12 +50,7 @@ Variável nova só vale depois de um novo deploy.
 
 ## Pendências
 
-1. **Utmify ← Cakto**: as vendas ainda não chegam no dashboard 🧑🏻‍💻🌐. Esse dashboard não tem credencial de API
-   (as integrações antigas da Cakto para o Grimório e o +80 Páginas apontam para uma credencial que não existe mais)
-   e a conta da Utmify está no limite de credenciais (`API_CREDENTIALS_QUOTA_EXCEEDED` ao tentar criar
-   "Cakto - A Oração Perdida" em 26/11). Para ligar: liberar uma credencial (o usuário decide qual apagar) ou subir o
-   plano, criar a credencial no 🧑🏻‍💻🌐 e, na Cakto (Integrações → Apps → UTMify), criar um app com o token dela
-   (o usuário cola) e o produto A Oração Perdida.
+1. Conferir na primeira venda (ou no primeiro Pix gerado) se o pedido aparece no dashboard 🧑🏻‍💻🌐 da Utmify.
 2. Opcional: webhook da Cakto para o player (`/conv?key=...` da aba *Instalar na página*) para ver as vendas no painel
    do GG's turb (o player já usa o `sck` como ID do visitante). A chave vai na URL: quem cola é o usuário.
 3. Opcional: lista de permissão do pixel com `a-oracao-perdida.pages.dev` e `pay.cakto.com.br`.
@@ -75,6 +70,10 @@ Variável nova só vale depois de um novo deploy.
   aprovada, só este produto, disparo individual. O *secret* dele está no Cloudflare como `CAKTO_CHAVE` (colado pelo
   usuário). Dois testes pelo botão "Testar" (26/11): reconhecidos como teste, com a chave válida no segundo; nada foi ao Meta.
 - A Cakto cobra do comprador uma "Taxa de serviço" de R$ 0,99 no checkout.
+- **Utmify**: credencial de API "Cakto - A Oração Perdida" criada no dashboard 🧑🏻‍💻🌐 (26/11, depois que o usuário liberou
+  espaço no limite de credenciais da conta) e app **UTMify - A Oração Perdida** na Cakto (id 88464), só este produto,
+  todos os eventos, com o token colado pelo usuário. As integrações antigas da Cakto desse dashboard (Grimório,
+  +80 Páginas) apontavam para uma credencial que não existe mais.
 
 ## Como voltar atrás
 
