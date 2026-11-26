@@ -43,12 +43,13 @@ Variável nova só vale depois de um novo deploy.
   `fbclid` no `utm_content`, como sempre faz); com o `mvt.js` aparece só o `sck` a mais.
 - Testes locais (Node + SQLite simulando o D1): 29 conferências, incluindo o formato do webhook da Cakto,
   botão Testar, order bump, Pix gerado, reembolso, repetida, chave errada e venda sem `sck`.
+- Token da API de Conversões colado pelo usuário (26/11) e publicado. Visita com `?mvteste=1` e a aba Eventos de
+  teste aberta: PageView, ViewContent e InitiateCheckout aceitos pelo Meta (`200 {"events_received":1}` no log do D1).
+  A tela nova de Eventos de teste não listou os eventos; a Visão geral seguiu sem atividade real (não viraram eventos reais).
 
 ## Pendências
 
-1. **Token da API de Conversões** (`META_CAPI_TOKEN`) colado pelo usuário + novo deploy; depois, validar
-   PageView/ViewContent/InitiateCheckout na aba Eventos de teste (abrir a página com `?mvteste=1`).
-2. **Cakto** (produto ainda não criado):
+1. **Cakto** (produto ainda não criado):
    - Criar o produto/oferta de R$ 97. **Não cadastrar o Pixel religião na Cakto**: InitiateCheckout sai da página e
      o Purchase sai do `/api/compra`; um pixel na Cakto duplicaria os dois.
    - Trocar o link do botão (`.cta-button` no `index.html`) de `checkout.ticto.app/...` para `https://pay.cakto.com.br/<id>`.
@@ -60,10 +61,10 @@ Variável nova só vale depois de um novo deploy.
      dashboard estava vazia em 26/11.
    - Opcional: webhook para o player (`/conv?key=...` da aba *Instalar na página* do player) para ver as vendas
      no painel do GG's turb. Ele acha a sessão pelo `sck`.
-3. **Virada para live** (só com ok do usuário): `TRACK_MODE=live` no Cloudflare + `MODO = 'live'` no `mvt.js`
+2. **Virada para live** (só com ok do usuário): `TRACK_MODE=live` no Cloudflare + `MODO = 'live'` no `mvt.js`
    (o commit publica). Não há nada para desligar antes (nem Utmify nem checkout mandam para esse pixel).
    Opcional: lista de permissão do pixel com `a-oracao-perdida.pages.dev` e `pay.cakto.com.br`.
-4. Primeira venda: conferir log `origem='compra'` com `vid:sim visitante:sim`, linha em `compras` com
+3. Primeira venda: conferir log `origem='compra'` com `vid:sim visitante:sim`, linha em `compras` com
    `achou_visitante = 1`, Purchase no Gerenciador de Eventos e venda atribuída na Utmify.
 
 ## Como voltar atrás
