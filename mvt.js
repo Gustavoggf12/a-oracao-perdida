@@ -15,7 +15,7 @@
   var PRODUTO = 'A Oração Perdida';          // content_name
   var VALOR = 97;                            // valor do produto da frente (BRL)
   var PARAM_VID = 'sck';                     // parâmetro que leva o vid até o checkout (a Cakto devolve em data.sck)
-  var CHECKOUT = /pay\.cakto\.com\.br|checkout\.ticto\.app/i; // links de checkout (IC e garantia do vid no link)
+  var CHECKOUT = /pay\.cakto\.com\.br/i;  // links de checkout (IC e garantia do vid no link)
   var API = '/api/evento';
   // ==================================
 

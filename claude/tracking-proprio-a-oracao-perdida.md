@@ -49,23 +49,24 @@ Variável nova só vale depois de um novo deploy.
 
 ## Pendências
 
-1. **Cakto** (produto ainda não criado):
-   - Criar o produto/oferta de R$ 97. **Não cadastrar o Pixel religião na Cakto**: InitiateCheckout sai da página e
-     o Purchase sai do `/api/compra`; um pixel na Cakto duplicaria os dois.
-   - Trocar o link do botão (`.cta-button` no `index.html`) de `checkout.ticto.app/...` para `https://pay.cakto.com.br/<id>`.
-     O `mvt.js` já reconhece os dois.
-   - Webhook para o tracking: URL `https://a-oracao-perdida.pages.dev/api/compra`, evento **Compra aprovada**, só o
-     produto principal. Copiar o *secret* para o segredo `CAKTO_CHAVE` no Cloudflare e publicar de novo.
-     O botão "Testar" da Cakto é reconhecido e nunca vai para o Meta; a estrutura fica na tabela `postbacks`.
-   - Webhook para a Utmify (dashboard 🧑🏻‍💻🌐 → Integrações → Webhooks → Adicionar → Cakto). A aba Webhooks desse
-     dashboard estava vazia em 26/11.
-   - Opcional: webhook para o player (`/conv?key=...` da aba *Instalar na página* do player) para ver as vendas
-     no painel do GG's turb. Ele acha a sessão pelo `sck`.
+1. **Cakto**: produto criado em 26/11 (ver seção Cakto abaixo). Falta o webhook do tracking (`/api/compra`) com o
+   segredo `CAKTO_CHAVE` colado pelo usuário, e a ligação com a Utmify.
 2. **Virada para live** (só com ok do usuário): `TRACK_MODE=live` no Cloudflare + `MODO = 'live'` no `mvt.js`
    (o commit publica). Não há nada para desligar antes (nem Utmify nem checkout mandam para esse pixel).
    Opcional: lista de permissão do pixel com `a-oracao-perdida.pages.dev` e `pay.cakto.com.br`.
 3. Primeira venda: conferir log `origem='compra'` com `vid:sim visitante:sim`, linha em `compras` com
    `achou_visitante = 1`, Purchase no Gerenciador de Eventos e venda atribuída na Utmify.
+
+## Cakto
+
+- Produto **A Oração Perdida** (id `126bd319-18d5-4608-8d78-e2015d7ed7bc`, short `9S7fehi`), R$ 97,00, pagamento único,
+  até 12x (12x de R$ 10,02 no cartão), garantia 7 dias, Pix como padrão, sem confirmação de e-mail nem campo de cupom.
+- Oferta `t7cpggx` → checkout `https://pay.cakto.com.br/t7cpggx` (botão da página aponta para ele desde 26/11).
+- Entrega: "Link de pagamento" (sem entrega automática, como o Grimório de São Bento); o usuário confirmou
+  a declaração da Cakto de que a entrega ao comprador é responsabilidade dele.
+- Suporte: gustavoggf12@gmail.com (o e-mail verificado que veio preenchido); produtor exibido: Meu Milagre.
+- **Nenhum pixel na Cakto** (de propósito: IC sai da página, Purchase sai do `/api/compra`).
+- A Cakto cobra do comprador uma "Taxa de serviço" de R$ 0,99 no checkout.
 
 ## Como voltar atrás
 
