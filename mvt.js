@@ -10,7 +10,7 @@
    Abrir a página com ?mvteste=1 marca os eventos desta aba como teste (vão para Eventos de Teste). */
 (function () {
   // ===== CONFIGURAÇÃO DA OFERTA =====
-  var MODO = 'sombra';                       // 'sombra' até a virada; depois 'live'
+  var MODO = 'live';                         // 'live' desde 26/11/2026 ('sombra' para voltar atrás)
   var PIXEL = '1048248480917006';            // Pixel religião (BM MA)
   var PRODUTO = 'A Oração Perdida';          // content_name
   var VALOR = 97;                            // valor do produto da frente (BRL)
