@@ -48,14 +48,26 @@ Variável nova só vale depois de um novo deploy.
   teste aberta: PageView, ViewContent e InitiateCheckout aceitos pelo Meta (`200 {"events_received":1}` no log do D1).
   A tela nova de Eventos de teste não listou os eventos; a Visão geral seguiu sem atividade real (não viraram eventos reais).
 
+## Conferência das primeiras vendas (27/11, 13h)
+
+- Cakto: 3 vendas pagas (Pix) + 2 Pix aguardando pagamento, todas do produto principal e com `sck`.
+- Tracking: as 3 vendas pagas viraram Purchase (`live 200 {"events_received":1}`), todas com `vid:sim visitante:sim fbc:sim`;
+  nenhuma falha no log; webhook da Cakto com 100% de sucesso.
+- Meta (Pixel religião): Compra = 3 (API de Conversões, qualidade da correspondência 9,3/10); PageView 548,
+  ViewContent 545, InitiateCheckout 56 (navegador + servidor, 6,7/10). O Meta também recebe uma cópia dos eventos do
+  navegador pela "API de Conversões com a Meta" (recurso do próprio Meta, mesmo event_id).
+- Utmify (🧑🏻‍💻🌐): 3 vendas aprovadas de A Oração Perdida atribuídas a MetaAds, com utm_term (posicionamento).
+- Visitantes no D1 desde a virada: 184, 89% com fbc, 77% com UTMs, 100% com cidade.
+- O valor do Purchase é o `amount` da Cakto (R$ 97,99 = R$ 97 + taxa de serviço de R$ 0,99 paga pelo comprador).
+- Lista de permissão do pixel criada em 27/11 com `a-oracao-perdida.pages.dev` (pedido do Diagnóstico do Meta; 0% de
+  tráfego bloqueado estimado). Se a oferta ganhar domínio próprio, adicionar o domínio novo à lista antes de trocar.
+- Diagnóstico do Meta: aviso de bloqueio, em 28 dias, dos dados do site **só para visitantes da Região Europeia**, porque o
+  conteúdo foi classificado como ligado a crenças religiosas. Não afeta o tráfego do Brasil.
+
 ## Pendências
 
-1. Conferir na primeira venda (ou no primeiro Pix gerado) se o pedido aparece no dashboard 🧑🏻‍💻🌐 da Utmify.
-2. Opcional: webhook da Cakto para o player (`/conv?key=...` da aba *Instalar na página*) para ver as vendas no painel
+1. Opcional: webhook da Cakto para o player (`/conv?key=...` da aba *Instalar na página*) para ver as vendas no painel
    do GG's turb (o player já usa o `sck` como ID do visitante). A chave vai na URL: quem cola é o usuário.
-3. Opcional: lista de permissão do pixel com `a-oracao-perdida.pages.dev` e `pay.cakto.com.br`.
-4. Primeira venda: conferir log `origem='compra'` com `live ... 200`, `vid:sim visitante:sim`, linha em `compras` com
-   `achou_visitante = 1` e `enviado = 1`, e o Purchase no Gerenciador de Eventos.
 
 ## Cakto
 
